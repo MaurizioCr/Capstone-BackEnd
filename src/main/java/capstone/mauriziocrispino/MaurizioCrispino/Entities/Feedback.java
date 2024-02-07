@@ -17,7 +17,7 @@ public class Feedback {
     private String feedback;
     private int votoFeedback;
     @ManyToOne
-    @JoinColumn(name = "provincia", nullable = false)
+    @JoinColumn(name = "Utente", nullable = false)
     private Utente utente;
 
     public String getFeedback() {
