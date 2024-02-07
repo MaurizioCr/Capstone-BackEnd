@@ -35,7 +35,6 @@ public class UtenteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
     public UtenteResponseDTO createUser(@RequestBody @Validated UtenteDTO newUserPayload, BindingResult validation){
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().stream().map(err -> err.getDefaultMessage()).toList().toString());
@@ -45,7 +44,6 @@ public class UtenteController {
 
     }
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Utente findByIdAndUpdate(@PathVariable long id, @RequestBody Utente updateUserPayload){
         return utenteService.findbyIdAndUpdate(id,updateUserPayload);
     }
@@ -58,7 +56,6 @@ public class UtenteController {
 
     //Endpoint per upload immagini
     @PostMapping("/{id}/upload")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile file, @PathVariable long id) throws IOException {
         return utenteService.uploadPicture(file);
     }
