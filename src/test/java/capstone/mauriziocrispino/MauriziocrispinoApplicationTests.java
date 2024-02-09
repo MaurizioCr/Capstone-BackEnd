@@ -17,32 +17,32 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest
 class MauriziocrispinoApplicationTests {
 
-	private String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NjE4ODc0LCJleHAiOjE3MDcyMjM2NzR9.MFpCpjjxb814BLP0cTQ6ey7FBuR2etwGiEkMX3GAKHQ";
+	private String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA3MzI0Mzg4LCJleHAiOjE3MDc5MjkxODh9.GQOeh14geI7Ot4-VfdRPzFyqannSO4ucajq3gqwyzD0";
 
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 	@Test
 	void loginOK() throws Exception {
-		String requestBody = "{\"email\": \"marchese@hotmail.com\",\"password\":\"1234\"}";
+		String requestBody = "{\"email\": \"email@gmail.com\",\"password\":\"prova\"}";
 
 		given()
 				.contentType("application/json")
 				.body(requestBody)
 				.when()
-				.post("http://localhost:3001/auth/login")
+				.post("http://localhost:3010/auth/login")
 				.then()
 				.statusCode(200)
 				.body(matchesRegex("\\{\"token\":\".{1,}\"\\}"));
 	}
 	@Test
 	void loginNo() throws Exception {
-		String requestBody = "{\"email\": \"maurizio@hotmail.com\",\"password\":\"1\"}";
+		String requestBody = "{\"email\": \"emaii@gmail.com\",\"prob\":\"1\"}";
 
 		given()
 				.contentType("application/json")
 				.body(requestBody)
 				.when()
-				.post("http://localhost:3001/auth/login")
+				.post("http://localhost:3010/auth/login")
 				.then()
 				.statusCode(401);
 		//.body(matchesRegex("\\{\"token\":\".{1,}\"\\}"));
@@ -75,7 +75,7 @@ class MauriziocrispinoApplicationTests {
 				.contentType("application/json")
 				.body(requestBody)
 				.when()
-				.post("http://localhost:3001/feedbacks");
+				.post("http://localhost:3010/feedbacks");
 		response.then().assertThat().statusCode(anyOf(equalTo(401), equalTo(201)));
 		//prendo l'indirizzo appena creato
 		if(response.statusCode() == 201) {
@@ -85,7 +85,7 @@ class MauriziocrispinoApplicationTests {
 					.header("Authorization", "Bearer " + bearerToken) // Aggiungi il token di autenticazione Bearer
 					.contentType("application/json")
 					.when()
-					.get("http://localhost:3001/feedbacks/" + idFeedback);
+					.get("http://localhost:3010/feedbacks/" + idFeedback);
 			response2.then().assertThat().statusCode(200);
 
 			//cancello l'indirizzo appena creato
@@ -93,7 +93,7 @@ class MauriziocrispinoApplicationTests {
 					.header("Authorization", "Bearer " + bearerToken) // Aggiungi il token di autenticazione Bearer
 					.contentType("application/json")
 					.when()
-					.delete("http://localhost:3001/indirizzi/"+idFeedback);
+					.delete("http://localhost:3010/indirizzi/"+idFeedback);
 			response3.then().assertThat().statusCode(204);
 		}
 		if(response.statusCode() == 401){
@@ -102,7 +102,7 @@ class MauriziocrispinoApplicationTests {
 					.header("Authorization", "Bearer " + bearerToken) // Aggiungi il token di autenticazione Bearer
 					.contentType("application/json")
 					.when()
-					.get("http://localhost:3001/feedbacks" );
+					.get("http://localhost:3010/feedbacks" );
 			response3.then().assertThat().statusCode(200);
 			JsonNode jsonNode = objectMapper.readTree(response3.body().asString()).get("content");
 			//elimino il primo feedback
@@ -110,7 +110,7 @@ class MauriziocrispinoApplicationTests {
 					.header("Authorization", "Bearer " + bearerToken) // Aggiungi il token di autenticazione Bearer
 					.contentType("application/json")
 					.when()
-					.delete("http://localhost:3001/feedbacks/"+jsonNode.get(0).get("id").asLong());
+					.delete("http://localhost:3010/feedbacks/"+jsonNode.get(0).get("id").asLong());
 			response4.then().assertThat().statusCode(204);
 		}
 

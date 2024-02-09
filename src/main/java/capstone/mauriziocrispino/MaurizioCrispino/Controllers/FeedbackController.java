@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/feedbacks")
 public class FeedbackController {
@@ -20,10 +22,8 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @GetMapping
-    public Page<Feedback> getFeedbacks(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size,
-                                   @RequestParam(defaultValue = "id") String orderBy){
-        return feedbackService.getFeedbacks(page, size, orderBy);
+    public List<Feedback> getFeedbacks() {
+        return feedbackService.getAllFeedbacks();
     }
     @GetMapping("/{id}")
     public Feedback findById(@PathVariable long id){
@@ -41,13 +41,11 @@ public class FeedbackController {
 
     }
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Feedback findByIdAndUpdate(@PathVariable long id, @RequestBody Feedback updateUserPayload){
         return feedbackService.findbyIdAndUpdate(id,updateUserPayload);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('ADMIN')")
     public void findByIdAndDelete(@PathVariable long id){
         feedbackService.findByIdAndDelete(id);
     }
