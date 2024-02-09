@@ -54,6 +54,10 @@ public class UtenteService {
         return utenteRepository.findById(id).orElseThrow(()->new NotFoundException(id));
     }
 
+    public Utente findByUsername(String username){
+        return utenteRepository.findByUsername(username).orElseThrow(()->new NotFoundException(username));
+    }
+
     public void findByIdAndDelete(long id){
         Utente found = this.findById(id);
         utenteRepository.delete(found);

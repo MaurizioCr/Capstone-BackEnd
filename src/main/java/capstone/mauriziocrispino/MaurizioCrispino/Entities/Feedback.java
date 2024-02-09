@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -24,11 +23,23 @@ public class Feedback {
         return feedback;
     }
 
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
     public int getVotoFeedback() {
         return votoFeedback;
     }
 
+    public void setVotoFeedback(int votoFeedback) {
+        this.votoFeedback = votoFeedback;
+    }
+
     public Utente getUtente() {
         return utente;
+    }
+
+    public void setUtente(Utente utente) {
+        this.utente = utente;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,19 +34,14 @@ public class FeedbackController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<List<FeedbackResponseDTO>> createFeedback(@RequestBody @Validated FeedbackDTO newUserPayload, BindingResult validation) {
+    public List<Feedback> createFeedback(@RequestBody @Validated FeedbackDTO newUserPayload, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().stream().map(err -> err.getDefaultMessage()).toList().toString());
         }
-
-        Feedback newFeedback = feedbackService.save(newUserPayload);
-        List<FeedbackResponseDTO> updatedFeedbackList = feedbackService.getAllFeedbacks()
-                .stream()
-                .map(feedback -> new FeedbackResponseDTO(feedback.getId()))
-                .toList();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(updatedFeedbackList);
+        feedbackService.save(newUserPayload);
+        return feedbackService.getAllFeedbacks();
     }
+
 
 
     @PutMapping("/{id}")
