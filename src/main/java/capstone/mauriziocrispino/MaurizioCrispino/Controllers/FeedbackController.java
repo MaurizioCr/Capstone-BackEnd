@@ -8,6 +8,7 @@ import capstone.mauriziocrispino.MaurizioCrispino.Services.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -32,14 +33,21 @@ public class FeedbackController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FeedbackResponseDTO createFeedback(@RequestBody @Validated FeedbackDTO newUserPayload, BindingResult validation){
+    public ResponseEntity<List<FeedbackResponseDTO>> createFeedback(@RequestBody @Validated FeedbackDTO newUserPayload, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().stream().map(err -> err.getDefaultMessage()).toList().toString());
         }
-        Feedback newFeedack = feedbackService.save(newUserPayload);
-        return new FeedbackResponseDTO(newFeedack.getId());
 
+        Feedback newFeedback = feedbackService.save(newUserPayload);
+        List<FeedbackResponseDTO> updatedFeedbackList = feedbackService.getAllFeedbacks()
+                .stream()
+                .map(feedback -> new FeedbackResponseDTO(feedback.getId()))
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedFeedbackList);
     }
+
+
     @PutMapping("/{id}")
     public Feedback findByIdAndUpdate(@PathVariable long id, @RequestBody Feedback updateUserPayload){
         return feedbackService.findbyIdAndUpdate(id,updateUserPayload);
