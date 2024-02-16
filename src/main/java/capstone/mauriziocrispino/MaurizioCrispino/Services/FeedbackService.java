@@ -29,6 +29,9 @@ public class FeedbackService {
     @Autowired
     private UtenteRepository utenteRepository;
 
+    @Autowired
+    private UtenteService utenteService;
+
     public List<Feedback> getAllFeedbacks() {
         return feedbackRepository.findAll();
     }
@@ -44,7 +47,7 @@ public class FeedbackService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // Cerco l'utente per nome utente
-        Utente utente = utenteRepository.findByUsername(userDetails.getUsername());
+        Utente utente = utenteService.findByUsername(userDetails.getUsername());
 
         if (utente == null) {
             throw new NotFoundException("Utente non trovato");
@@ -55,9 +58,11 @@ public class FeedbackService {
         newFeedback.setVotoFeedback(body.votoFeedback());
         newFeedback.setUtente(utente);
         return feedbackRepository.save(newFeedback);
-
-
     }
+
+
+
+
 
 
     public capstone.mauriziocrispino.MaurizioCrispino.Entities.Feedback findById(long id){
