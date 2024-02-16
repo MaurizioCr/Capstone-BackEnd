@@ -1,10 +1,12 @@
 package capstone.mauriziocrispino.MaurizioCrispino.Controllers;
 
+import capstone.mauriziocrispino.MaurizioCrispino.Config.ServerConfig;
 import capstone.mauriziocrispino.MaurizioCrispino.DTO.UtenteDTO;
 import capstone.mauriziocrispino.MaurizioCrispino.DTO.UtenteResponseDTO;
 import capstone.mauriziocrispino.MaurizioCrispino.Entities.Utente;
 import capstone.mauriziocrispino.MaurizioCrispino.Exceptions.BadRequestException;
 import capstone.mauriziocrispino.MaurizioCrispino.Services.UtenteService;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -43,7 +46,7 @@ public class UtenteController {
         return new UtenteResponseDTO(nuovoUtente.getId());
 
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public Utente findByIdAndUpdate(@PathVariable long id, @RequestBody Utente updateUserPayload){
         return utenteService.findbyIdAndUpdate(id,updateUserPayload);
     }

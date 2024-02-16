@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Service
 public class UtenteService {
@@ -65,10 +66,18 @@ public class UtenteService {
 
     public Utente findbyIdAndUpdate(long id, Utente body){
         Utente found = this.findById(id);
-        found.setCognome(body.getCognome());
-        found.setNome(body.getNome());
-        found.setEmail(body.getEmail());
-        found.setUsername(body.getUsername());
+        if (body.getCognome() != null && !body.getCognome().isEmpty()) {
+            found.setCognome(body.getCognome());
+        }
+        if (body.getNome() != null && !body.getNome().isEmpty()) {
+            found.setNome(body.getNome());
+        }
+        if (body.getEmail() != null && !body.getEmail().isEmpty()) {
+            found.setEmail(body.getEmail());
+        }
+        if (body.getUsername() != null && !body.getUsername().isEmpty()) {
+            found.setUsername(body.getUsername());
+        }
         return utenteRepository.save(found);
 
     }

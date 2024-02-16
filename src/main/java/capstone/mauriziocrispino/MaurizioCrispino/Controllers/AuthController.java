@@ -25,7 +25,8 @@ public class AuthController {
     @PostMapping("/login")
     public UserLoginResponseDTO login(@RequestBody UserLoginDTO body) {
         String accessToken = authService.authenticateUser(body);
-        return new UserLoginResponseDTO(accessToken);
+        Long id = utenteService.findByEmail(body.email()).getId();
+        return new UserLoginResponseDTO(accessToken, id );
     }
 
     @PostMapping("/register")
