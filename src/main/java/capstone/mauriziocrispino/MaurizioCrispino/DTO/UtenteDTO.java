@@ -19,5 +19,5 @@ String nome,
         String username,
         Role role) {
 
-        }
+}
 

@@ -52,15 +52,19 @@ public class FeedbackService {
         if (utente == null) {
             throw new NotFoundException("Utente non trovato");
         }
-
         capstone.mauriziocrispino.MaurizioCrispino.Entities.Feedback newFeedback = new capstone.mauriziocrispino.MaurizioCrispino.Entities.Feedback();
         newFeedback.setFeedback(body.feedback());
         newFeedback.setVotoFeedback(body.votoFeedback());
+        validateVotoFeedback(body.votoFeedback());
+
         newFeedback.setUtente(utente);
         return feedbackRepository.save(newFeedback);
     }
 
-
+    private void validateVotoFeedback(int voto) {
+        if (voto < 1 || voto > 10) {
+            throw new IllegalArgumentException("Il voto deve essere compreso tra 1 e 10");
+        }}
 
 
 

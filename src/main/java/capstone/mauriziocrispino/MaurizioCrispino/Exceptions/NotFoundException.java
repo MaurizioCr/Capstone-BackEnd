@@ -5,7 +5,7 @@ public class NotFoundException extends RuntimeException {
         super("Elemento con id " + id + " non trovato!");
     }
 
-    public NotFoundException(String message) {
-        super(message);
+    public NotFoundException(String username) {
+        super("username con id " + username + " non trovato!");
     }
 }
