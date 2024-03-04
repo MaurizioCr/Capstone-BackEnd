@@ -38,6 +38,9 @@ public class Utente implements UserDetails {
     @JsonIgnore
     private List<Feedback> feedbackList;
 
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));

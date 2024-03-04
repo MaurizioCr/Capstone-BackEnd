@@ -10,14 +10,21 @@ import java.util.Map;
 
 @Configuration
 public class ServerConfig {
+    @Value("${cloudinary.name}")
+    private String cloudName;
+
+    @Value("${cloudinary.apikey}")
+    private String apiKey;
+
+    @Value("${cloudinary.secret}")
+    private String apiSecret;
+
     @Bean
-    public Cloudinary cloudinaryUploader(@Value("${cloudinary.name}") String name,
-                                         @Value("${cloudinary.apikey}") String apikey,
-                                         @Value("${cloudinary.secret}") String secret){
+    public Cloudinary cloudinaryUploader() {
         Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", name);
-        config.put("api_key", apikey);
-        config.put("api_secret", secret);
+        config.put("cloud_name", cloudName);
+        config.put("api_key", apiKey);
+        config.put("api_secret", apiSecret);
         return new Cloudinary(config);
     }
 }
