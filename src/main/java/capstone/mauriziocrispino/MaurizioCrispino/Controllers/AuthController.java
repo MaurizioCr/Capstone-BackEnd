@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,13 +32,13 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO createUser(@RequestBody @Validated UtenteDTO newUserPayload, BindingResult validation) {
+    public ResponseDTO createUser(@RequestBody @Validated UtenteDTO newUserPayload, MultipartFile avatarFile, BindingResult validation) {
         // Per completare la validazione devo in qualche maniera fare un controllo del tipo: se ci sono errori -> manda risposta con 400 Bad Request
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().stream().toList().toString()); // L'eccezione arriverà agli error handlers tra i quali c'è quello che manderà la risposta con status code 400
         } else {
             System.out.println(newUserPayload);
-            Utente newUser = utenteService.save(newUserPayload);
+            Utente newUser = utenteService.save(newUserPayload, avatarFile);
 
             return new ResponseDTO(newUser.getId());
         }
