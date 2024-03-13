@@ -17,6 +17,9 @@ String nome,
         String email,
         @NotEmpty(message = "L'username è un campo obbligatorio!")
         String username,
+
+        @NotEmpty(message = "Scegli un avatar!")
+        String avatar,
         Role role) {
 
 }

@@ -39,6 +39,7 @@ public class UtenteService {
         utenteRepository.findByEmail(body.email()).ifPresent(utente -> {
             throw new BadRequestException("L'email " + utente.getEmail() + " è già in uso!");
         });
+
         Utente nuovoUtente = new Utente();
         nuovoUtente.setNome(body.nome());
         nuovoUtente.setCognome(body.cognome());
@@ -46,23 +47,13 @@ public class UtenteService {
         nuovoUtente.setUsername(body.username());
         nuovoUtente.setPassword(bcrypt.encode(body.password()));
         nuovoUtente.setRole(Role.USER);
+        nuovoUtente.setAvatar(body.avatar());
 
-        // Carica l'immagine su Cloudinary e imposta l'URL dell'avatar nel nuovo utente
-        try {
-            if (avatarFile != null && !avatarFile.isEmpty()) {
-                String avatarUrl = uploadPicture(avatarFile);
-                nuovoUtente.setAvatar(avatarUrl);
-            } else {
-                nuovoUtente.setAvatar("https://ui-avatars.com/api/?name=" + nuovoUtente.getNome() + "+" + nuovoUtente.getCognome());
-            }
-        } catch (IOException e) {
-            // Gestisci l'errore di caricamento dell'immagine
-            e.printStackTrace();
-            throw new RuntimeException("Errore durante il caricamento dell'immagine.");
-        }
+        // Carica l'immagine su Cloudinary solo se avatarFile è presente e non è vuoto
 
         return utenteRepository.save(nuovoUtente);
     }
+
 
     public Utente findById(long id){
         return utenteRepository.findById(id).orElseThrow(()->new NotFoundException(id));
